@@ -1,0 +1,101 @@
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  position: relative;
+  width: calc(100% - 400px);
+  height: calc(100% - 100px);
+  margin: 10px 450px;
+}
+
+/* Content Editable Area */
+.content-editable {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  outline: none;
+  overflow-y: auto;
+  font-size: 28px; /* Adjust this value to change text size */
+  line-height: 1.6;
+}
+
+.content-editable:focus {
+  cursor: text;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Placeholder Text */
+.placeholder {
+  color: #888888;
+}
+
+/* Pop-Up Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 5px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.popup h2 {
+  margin-top: 0;
+}
+
+.popup button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #3f51b5;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.popup button:hover {
+  background-color: #303f9f;
+}
+
+/* Resizable Image Styles */
+img.resizable {
+  cursor: nwse-resize;
+}
+
+.resizable:active {
+  border: 2px dashed #3f51b5;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .popup {
+    width: 90%;
+    padding: 20px;
+  }
+}
