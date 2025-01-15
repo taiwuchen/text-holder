@@ -10,9 +10,6 @@ function App() {
     const savedContent = localStorage.getItem('content');
     if (savedContent) {
       contentRef.current.innerHTML = savedContent;
-    } else {
-      // Show placeholder text if no content is saved
-      contentRef.current.innerHTML = '<p class="placeholder">Type here...</p>';
     }
 
     // Check if the user has seen the popup before
@@ -127,7 +124,7 @@ function App() {
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
-            <h2>Welcome to Simple Text and Image App</h2>
+            <h2>Welcome to Text Holder!</h2>
             <p>
               Note: Your content is saved locally in your browser. Clearing your browser data will erase your content.
             </p>
