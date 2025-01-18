@@ -4,15 +4,22 @@ import './App.css';
 function App() {
   const contentRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [isContentEmpty, setIsContentEmpty] = useState(true);
 
   useEffect(() => {
     // Load saved content
     const savedContent = localStorage.getItem('content');
     if (savedContent) {
       contentRef.current.innerHTML = savedContent;
+      setIsContentEmpty(
+        contentRef.current.textContent.trim() === '' &&
+          contentRef.current.querySelectorAll('img').length === 0
+      );
+    } else {
+      setIsContentEmpty(true);
     }
 
-    // Check if the user has seen the popup before
+    // Show popup if first visit
     const hasVisited = localStorage.getItem('hasVisited');
     if (!hasVisited) {
       setShowPopup(true);
@@ -40,7 +47,7 @@ function App() {
     if (!isImagePasted) {
       // Allow default paste behavior for text
       setTimeout(() => {
-        saveContent();
+        handleInput(); // Check content after paste
       }, 0);
     }
   };
@@ -75,7 +82,7 @@ function App() {
     selection.removeAllRanges();
     selection.addRange(range);
 
-    saveContent();
+    handleInput();
   };
 
   const makeImageResizable = (img) => {
@@ -99,14 +106,19 @@ function App() {
   };
 
   const handleInput = () => {
-    removePlaceholder();
+    const contentText = contentRef.current.textContent.trim();
+    if (contentText === '' && contentRef.current.querySelectorAll('img').length === 0) {
+      setIsContentEmpty(true);
+    } else {
+      setIsContentEmpty(false);
+    }
     saveContent();
   };
 
-  const removePlaceholder = () => {
-    const placeholder = contentRef.current.querySelector('.placeholder');
-    if (placeholder) {
-      placeholder.remove();
+  const handleBlur = () => {
+    const contentText = contentRef.current.textContent.trim();
+    if (contentText === '' && contentRef.current.querySelectorAll('img').length === 0) {
+      setIsContentEmpty(true);
     }
   };
 
@@ -132,14 +144,18 @@ function App() {
           </div>
         </div>
       )}
-      {/* Content Editable Area */}
-      <div
-        ref={contentRef}
-        contentEditable
-        onPaste={handlePaste}
-        onInput={handleInput}
-        className="content-editable"
-      ></div>
+      {/* Editor Wrapper */}
+      <div className="editor-wrapper">
+        <div
+          ref={contentRef}
+          contentEditable
+          onPaste={handlePaste}
+          onInput={handleInput}
+          onBlur={handleBlur}
+          className="content-editable"
+        ></div>
+        {isContentEmpty && <div className="placeholder">Type or insert image here</div>}
+      </div>
     </div>
   );
 }
