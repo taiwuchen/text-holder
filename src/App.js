@@ -30,7 +30,7 @@ function App() {
   const handlePaste = (event) => {
     const items = event.clipboardData.items;
     let isImagePasted = false;
-
+  
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf('image') !== -1) {
         const file = items[i].getAsFile();
@@ -44,11 +44,38 @@ function App() {
       }
     }
 
+    // Modified text paste handling, make sure it does not adhere the style of the original text
     if (!isImagePasted) {
-      // Allow default paste behavior for text
-      setTimeout(() => {
-        handleInput(); // Check content after paste
-      }, 0);
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+  
+      // Insert paragraphs with line breaks
+      const paragraphs = text.split('\n'); // Split text by newlines
+      const selection = window.getSelection();
+      if (selection.rangeCount === 0) return;
+  
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+  
+      paragraphs.forEach((paragraph, index) => {
+        const textNode = document.createTextNode(paragraph);
+        range.insertNode(textNode);
+  
+        // Add a <br> after each paragraph except the last one
+        if (index < paragraphs.length - 1) {
+          const br = document.createElement('br');
+          range.insertNode(br);
+        }
+  
+        // Update the range position
+        range.setStartAfter(textNode);
+      });
+  
+      // Move the cursor to the end
+      selection.removeAllRanges();
+      selection.addRange(range);
+  
+      handleInput();
     }
   };
 
