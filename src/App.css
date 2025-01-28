@@ -10,6 +10,12 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.indie-flower-regular {
+  font-family: "Indie Flower", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .app {
   position: relative;
   max-width: 1200px; /* Set a maximum width for the content area */
@@ -34,7 +40,6 @@ body {
   padding: 20px;
   outline: none;
   overflow-y: auto;
-  font-size: 28px;
   line-height: 1.6;
   word-wrap: break-word; /* Ensure long words break to prevent overflow */
   overflow-wrap: break-word; /* For wider browser support */
@@ -55,10 +60,11 @@ img {
   top: 20px;
   left: 20px;
   color: #888888;
-  pointer-events: none; /* Make placeholder unselectable and non-interactive */
+  pointer-events: none;
   font-size: 28px;
   line-height: 1.6;
-  user-select: none; /* Prevent text selection */
+  user-select: none;
+  font-family: "Indie Flower", serif !important;
 }
 
 /* Pop-Up Styles */
@@ -112,14 +118,13 @@ img.resizable {
 
 /* enforce style */
 .content-editable {
+  font-family: "Indie Flower", serif !important;
   font-size: 28px !important;
-  font-family: Arial, sans-serif !important;
 }
 
 .content-editable * {
   font-size: inherit !important;
   font-family: inherit !important;
-  all: initial; /* Reset any nested styles */
 }
 
 /* Responsive Design */
