@@ -30,7 +30,7 @@ function App() {
   const handlePaste = (event) => {
     const items = event.clipboardData.items;
     let isImagePasted = false;
-
+  
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf('image') !== -1) {
         const file = items[i].getAsFile();
@@ -48,21 +48,33 @@ function App() {
     if (!isImagePasted) {
       event.preventDefault();
       const text = event.clipboardData.getData('text/plain');
-      
-      // Insert plain text at cursor position
+  
+      // Insert paragraphs with line breaks
+      const paragraphs = text.split('\n'); // Split text by newlines
       const selection = window.getSelection();
       if (selection.rangeCount === 0) return;
-      
+  
       const range = selection.getRangeAt(0);
       range.deleteContents();
-      const textNode = document.createTextNode(text);
-      range.insertNode(textNode);
-      
-      // Move cursor to end of inserted text
-      range.setStartAfter(textNode);
+  
+      paragraphs.forEach((paragraph, index) => {
+        const textNode = document.createTextNode(paragraph);
+        range.insertNode(textNode);
+  
+        // Add a <br> after each paragraph except the last one
+        if (index < paragraphs.length - 1) {
+          const br = document.createElement('br');
+          range.insertNode(br);
+        }
+  
+        // Update the range position
+        range.setStartAfter(textNode);
+      });
+  
+      // Move the cursor to the end
       selection.removeAllRanges();
       selection.addRange(range);
-
+  
       handleInput();
     }
   };
