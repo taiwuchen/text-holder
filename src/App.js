@@ -44,11 +44,26 @@ function App() {
       }
     }
 
+    // Modified text paste handling, make sure it does not adhere the style of the original text
     if (!isImagePasted) {
-      // Allow default paste behavior for text
-      setTimeout(() => {
-        handleInput(); // Check content after paste
-      }, 0);
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+      
+      // Insert plain text at cursor position
+      const selection = window.getSelection();
+      if (selection.rangeCount === 0) return;
+      
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      const textNode = document.createTextNode(text);
+      range.insertNode(textNode);
+      
+      // Move cursor to end of inserted text
+      range.setStartAfter(textNode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      handleInput();
     }
   };
 

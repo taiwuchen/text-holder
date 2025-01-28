@@ -110,6 +110,18 @@ img.resizable {
   border: 2px dashed #3f51b5;
 }
 
+/* enforce style */
+.content-editable {
+  font-size: 28px !important;
+  font-family: Arial, sans-serif !important;
+}
+
+.content-editable * {
+  font-size: inherit !important;
+  font-family: inherit !important;
+  all: initial; /* Reset any nested styles */
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
   .popup {
