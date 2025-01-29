@@ -22,7 +22,7 @@ body {
 
 .app {
   position: relative;
-  max-width: 1200px; /* Set a maximum width for the content area */
+  width: 1200px; /* Set a maximum width for the content area */
   height: calc(100% - 100px);
   background-color: #ffffff; /* White background for the main content area */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
