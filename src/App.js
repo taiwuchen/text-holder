@@ -7,6 +7,7 @@ function App() {
   const [isContentEmpty, setIsContentEmpty] = useState(true);
   const [showSavedPages, setShowSavedPages] = useState(false);
   const [savedPages, setSavedPages] = useState([]);
+  const [selectedPageIds, setSelectedPageIds] = useState([]);
 
   useEffect(() => {
     // Load saved content for the active page
@@ -135,14 +136,15 @@ function App() {
   };
 
   // Save the current page to "pages" and clear the active page,
-  // without removing the previously saved pages.
+  // adding a default title and preserving previously saved pages.
   const handleSaveAndNewPage = () => {
     const currentContent = contentRef.current.innerHTML;
     const timestamp = new Date().getTime();
+    const defaultTitle = 'Page ' + new Date(timestamp).toLocaleString();
     const pages = localStorage.getItem('pages')
       ? JSON.parse(localStorage.getItem('pages'))
       : [];
-    pages.push({ id: timestamp, content: currentContent });
+    pages.push({ id: timestamp, content: currentContent, title: defaultTitle });
     localStorage.setItem('pages', JSON.stringify(pages));
 
     // Clear the active page (the saved page remains in "pages")
@@ -169,7 +171,34 @@ function App() {
     setShowSavedPages(false);
   };
 
+  const handleRenamePage = (pageId) => {
+    const newName = window.prompt('Enter a new name for this page:');
+    if (newName && newName.trim() !== '') {
+      const pages = savedPages.map(page =>
+        page.id === pageId ? { ...page, title: newName } : page
+      );
+      localStorage.setItem('pages', JSON.stringify(pages));
+      setSavedPages(pages);
+    }
+  };
+
+  const handleToggleSelectPage = (pageId, checked) => {
+    if (checked) {
+      setSelectedPageIds([...selectedPageIds, pageId]);
+    } else {
+      setSelectedPageIds(selectedPageIds.filter(id => id !== pageId));
+    }
+  };
+
+  const handleDeleteSelectedPages = () => {
+    const pages = savedPages.filter(page => !selectedPageIds.includes(page.id));
+    localStorage.setItem('pages', JSON.stringify(pages));
+    setSavedPages(pages);
+    setSelectedPageIds([]);
+  };
+
   const closeSavedPages = () => {
+    setSelectedPageIds([]);
     setShowSavedPages(false);
   };
 
@@ -218,17 +247,32 @@ function App() {
             {savedPages.length === 0 ? (
               <p>No saved pages available.</p>
             ) : (
-              <ul>
-                {savedPages.map((page) => (
-                  <li key={page.id} style={{ marginBottom: '10px' }}>
-                    <button onClick={() => handleLoadPage(page)}>
-                      Load Page {new Date(page.id).toLocaleString()}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <ul>
+                  {savedPages.map(page => (
+                    <li key={page.id} style={{ marginBottom: '10px', listStyle: 'none' }}>
+                      <input
+                        type="checkbox"
+                        style={{ marginRight: '10px' }}
+                        onChange={(e) => handleToggleSelectPage(page.id, e.target.checked)}
+                        checked={selectedPageIds.includes(page.id)}
+                      />
+                      <strong>{page.title || 'Untitled'}</strong>
+                      <button style={{ marginLeft: '10px' }} onClick={() => handleLoadPage(page)}>
+                        Load
+                      </button>
+                      <button style={{ marginLeft: '10px' }} onClick={() => handleRenamePage(page.id)}>
+                        Rename
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {selectedPageIds.length > 0 && (
+                  <button onClick={handleDeleteSelectedPages}>Delete Selected</button>
+                )}
+              </>
             )}
-            <button onClick={closeSavedPages}>Close</button>
+            <button onClick={closeSavedPages} style={{ marginTop: '20px' }}>Close</button>
           </div>
         </div>
       )}
