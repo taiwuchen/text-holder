@@ -256,7 +256,7 @@ function App() {
         {isContentEmpty && <div className="placeholder">Type or insert image here</div>}
       </div>
       
-      {/* Modal for Saved Pages */}
+      // Modal for Saved Pages in src/App.js
       {showSavedPages && (
         <div className="popup-overlay">
           <div className="popup">
@@ -274,10 +274,12 @@ function App() {
                         onChange={(e) => handleToggleSelectPage(page.id, e.target.checked)}
                         checked={selectedPageIds.includes(page.id)}
                       />
-                      <strong>{page.title || 'Untitled'}</strong>
-                      <button style={{ marginLeft: '10px' }} onClick={() => handleLoadPage(page)}>
-                        Load
-                      </button>
+                      <strong
+                        style={{ cursor: 'pointer', marginRight: '10px' }}
+                        onClick={() => handleLoadPage(page)}
+                      >
+                        {page.title || 'Untitled'}
+                      </strong>
                       <button style={{ marginLeft: '10px' }} onClick={() => handleRenamePage(page.id)}>
                         Rename
                       </button>
