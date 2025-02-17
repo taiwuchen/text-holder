@@ -283,7 +283,15 @@ function App() {
               <>
                 <ul>
                   {savedPages.map(page => (
-                    <li key={page.id} className="saved-page" style={{ marginBottom: '10px', listStyle: 'none' }}>
+                    <li
+                        key={page.id}
+                        className="saved-page"
+                        style={{
+                        listStyle: 'none',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+>
                       <input
                         type="checkbox"
                         style={{ marginRight: '10px' }}
@@ -296,8 +304,17 @@ function App() {
                       >
                         {page.title || 'Untitled'}
                       </strong>
-                      <button style={{ marginLeft: '10px' }} onClick={() => handleRenamePage(page.id)}>
-                        Rename
+                      <button
+                        onClick={() => handleRenamePage(page.id)}
+                        style={{
+                          marginLeft: '10px',
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer'
+                        }}
+                        aria-label="Rename"
+                      >
+                        <img src="/rename-icon.png" alt="Rename" style={{ width: '16px', height: '16px' }} />
                       </button>
                     </li>
                   ))}
