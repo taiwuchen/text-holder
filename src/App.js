@@ -5,9 +5,11 @@ function App() {
   const contentRef = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isContentEmpty, setIsContentEmpty] = useState(true);
+  const [showSavedPages, setShowSavedPages] = useState(false);
+  const [savedPages, setSavedPages] = useState([]);
 
   useEffect(() => {
-    // Load saved content
+    // Load saved content for the active page
     const savedContent = localStorage.getItem('content');
     if (savedContent) {
       contentRef.current.innerHTML = savedContent;
@@ -43,14 +45,10 @@ function App() {
         event.preventDefault();
       }
     }
-
-    // Modified text paste handling, make sure it does not adhere the style of the original text
     if (!isImagePasted) {
       event.preventDefault();
       const text = event.clipboardData.getData('text/plain');
-  
-      // Insert paragraphs with line breaks
-      const paragraphs = text.split('\n'); // Split text by newlines
+      const paragraphs = text.split('\n');
       const selection = window.getSelection();
       if (selection.rangeCount === 0) return;
   
@@ -60,27 +58,19 @@ function App() {
       paragraphs.forEach((paragraph, index) => {
         const textNode = document.createTextNode(paragraph);
         range.insertNode(textNode);
-  
-        // Add a <br> after each paragraph except the last one
         if (index < paragraphs.length - 1) {
           const br = document.createElement('br');
           range.insertNode(br);
         }
-  
-        // Update the range position
         range.setStartAfter(textNode);
       });
-  
-      // Move the cursor to the end
       selection.removeAllRanges();
       selection.addRange(range);
-  
       handleInput();
     }
   };
 
   const insertImageOnNewLine = (src) => {
-    // Create a new line before the image
     const brBefore = document.createElement('br');
     const img = document.createElement('img');
     img.src = src;
@@ -88,43 +78,32 @@ function App() {
     img.style.height = 'auto';
     img.classList.add('resizable');
     makeImageResizable(img);
-    // Create a new line after the image
     const brAfter = document.createElement('br');
 
     const selection = window.getSelection();
     if (!selection.rangeCount) return;
     const range = selection.getRangeAt(0);
-
-    // Move the cursor to the end of the current line
     range.collapse(false);
-
-    // Insert the line break, image, and another line break
     range.insertNode(brAfter);
     range.insertNode(img);
     range.insertNode(brBefore);
-
-    // Move cursor after the image
     range.setStartAfter(brAfter);
     range.collapse(true);
     selection.removeAllRanges();
     selection.addRange(range);
-
     handleInput();
   };
 
   const makeImageResizable = (img) => {
     img.addEventListener('mousedown', initDrag, false);
-
     function initDrag(e) {
       e.preventDefault();
       document.addEventListener('mousemove', doDrag, false);
       document.addEventListener('mouseup', stopDrag, false);
     }
-
     function doDrag(e) {
       img.style.width = e.pageX - img.getBoundingClientRect().left + 'px';
     }
-
     function stopDrag() {
       document.removeEventListener('mousemove', doDrag, false);
       document.removeEventListener('mouseup', stopDrag, false);
@@ -149,9 +128,49 @@ function App() {
     }
   };
 
+  // Saves the active page content under a persistent "content" key
   const saveContent = () => {
     const content = contentRef.current.innerHTML;
     localStorage.setItem('content', content);
+  };
+
+  // Save the current page to "pages" and clear the active page,
+  // without removing the previously saved pages.
+  const handleSaveAndNewPage = () => {
+    const currentContent = contentRef.current.innerHTML;
+    const timestamp = new Date().getTime();
+    const pages = localStorage.getItem('pages')
+      ? JSON.parse(localStorage.getItem('pages'))
+      : [];
+    pages.push({ id: timestamp, content: currentContent });
+    localStorage.setItem('pages', JSON.stringify(pages));
+
+    // Clear the active page (the saved page remains in "pages")
+    contentRef.current.innerHTML = '';
+    localStorage.removeItem('content');
+    setIsContentEmpty(true);
+  };
+
+  const handleShowSavedPages = () => {
+    const pages = localStorage.getItem('pages')
+      ? JSON.parse(localStorage.getItem('pages'))
+      : [];
+    setSavedPages(pages);
+    setShowSavedPages(true);
+  };
+
+  const handleLoadPage = (page) => {
+    contentRef.current.innerHTML = page.content;
+    localStorage.setItem('content', page.content);
+    setIsContentEmpty(
+      contentRef.current.textContent.trim() === '' &&
+        contentRef.current.querySelectorAll('img').length === 0
+    );
+    setShowSavedPages(false);
+  };
+
+  const closeSavedPages = () => {
+    setShowSavedPages(false);
   };
 
   const closePopup = () => {
@@ -171,7 +190,14 @@ function App() {
           </div>
         </div>
       )}
-      {/* Editor Wrapper */}
+      
+      {/* Toolbar */}
+      <div className="toolbar" style={{ marginBottom: '10px', textAlign: 'right' }}>
+        <button onClick={handleSaveAndNewPage}>Save &amp; New Page</button>
+        <button onClick={handleShowSavedPages}>Saved Pages</button>
+      </div>
+      
+      {/* Editor */}
       <div className="editor-wrapper">
         <div
           ref={contentRef}
@@ -183,6 +209,29 @@ function App() {
         ></div>
         {isContentEmpty && <div className="placeholder">Type or insert image here</div>}
       </div>
+      
+      {/* Modal for Saved Pages */}
+      {showSavedPages && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h2>Saved Pages</h2>
+            {savedPages.length === 0 ? (
+              <p>No saved pages available.</p>
+            ) : (
+              <ul>
+                {savedPages.map((page) => (
+                  <li key={page.id} style={{ marginBottom: '10px' }}>
+                    <button onClick={() => handleLoadPage(page)}>
+                      Load Page {new Date(page.id).toLocaleString()}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <button onClick={closeSavedPages}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
