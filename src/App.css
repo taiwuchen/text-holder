@@ -23,16 +23,26 @@ body {
 
 .app {
   position: relative;
-  width: 90%; /* Set a maximum width for the content area */
+  width: 90%;
   max-width: 1300px;
-  height: calc(100% - 100px);
-  background-color: #ffffff; /* White background for the main content area */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
-  padding: 20px; /* Adds space inside the content area */
+  height: 100vh; /* Use full viewport height */
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Editor Wrapper */
+/* Toolbar style with a distinct background color */
+.toolbar {
+  background-color: #e0e0e0;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Editor wrapper takes remaining space */
 .editor-wrapper {
+  flex: 1;
   position: relative;
   width: 100%;
   height: 100%;
