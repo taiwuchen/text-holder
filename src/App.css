@@ -22,7 +22,7 @@ body {
 }
 
 .app {
-  position: relative;
+  position: fixed;
   width: 90%;
   max-width: 1300px;
   height: 100vh; /* Use full viewport height */
