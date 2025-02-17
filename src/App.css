@@ -105,17 +105,16 @@ img {
 }
 
 .popup button {
-  margin-top: 20px;
+  margin-top: 5px;
   padding: 10px 20px;
-  background-color: #3f51b5;
+  background-color: #22aa57;
   color: #ffffff;
   border: none;
   cursor: pointer;
-  border-radius: 3px;
 }
 
 .popup button:hover {
-  background-color: #303f9f;
+  background-color: #22aa57;
 }
 
 /* Resizable Image Styles */

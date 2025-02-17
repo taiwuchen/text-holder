@@ -256,7 +256,7 @@ function App() {
         {isContentEmpty && <div className="placeholder">Type or insert image here</div>}
       </div>
       
-      // Modal for Saved Pages in src/App.js
+      {/* Modal for Saved Pages in src/App.js */}
       {showSavedPages && (
         <div className="popup-overlay">
           <div className="popup">
