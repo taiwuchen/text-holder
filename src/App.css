@@ -117,6 +117,17 @@ img {
   background-color: #22aa57;
 }
 
+/* Add hover effect for saved pages in the modal */
+.popup ul li.saved-page {
+  padding: 10px;
+  transition: background-color 0.2s;
+  border-radius: 3px;
+}
+
+.popup ul li.saved-page:hover {
+  background-color: #f1f1f1;
+}
+
 /* Resizable Image Styles */
 .img-container {
   position: relative;

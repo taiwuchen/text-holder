@@ -259,7 +259,23 @@ function App() {
       {/* Modal for Saved Pages in src/App.js */}
       {showSavedPages && (
         <div className="popup-overlay">
-          <div className="popup">
+          <div className="popup" style={{ position: 'relative' }}>
+            <button
+              onClick={closeSavedPages}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                border: 'none',
+                background: 'transparent',
+                fontSize: '20px',
+                cursor: 'pointer',
+                color: '#333',
+              }}
+              aria-label="Close"
+            >
+              ✖
+            </button>
             <h2>Saved Pages</h2>
             {savedPages.length === 0 ? (
               <p>No saved pages available.</p>
@@ -267,7 +283,7 @@ function App() {
               <>
                 <ul>
                   {savedPages.map(page => (
-                    <li key={page.id} style={{ marginBottom: '10px', listStyle: 'none' }}>
+                    <li key={page.id} className="saved-page" style={{ marginBottom: '10px', listStyle: 'none' }}>
                       <input
                         type="checkbox"
                         style={{ marginRight: '10px' }}
@@ -291,7 +307,6 @@ function App() {
                 )}
               </>
             )}
-            <button onClick={closeSavedPages} style={{ marginTop: '20px' }}>Close</button>
           </div>
         </div>
       )}
