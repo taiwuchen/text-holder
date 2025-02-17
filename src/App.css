@@ -60,7 +60,7 @@ body {
 img {
   max-width: 100%;
   height: auto;
-  border: 1px solid #3f51b5;
+  border: 1px solid #000000;
   border-radius: 3px;
   padding: 5px;
 }
@@ -105,17 +105,27 @@ img {
 }
 
 .popup button {
-  margin-top: 20px;
+  margin-top: 5px;
   padding: 10px 20px;
-  background-color: #3f51b5;
+  background-color: #22aa57;
   color: #ffffff;
   border: none;
   cursor: pointer;
-  border-radius: 3px;
 }
 
 .popup button:hover {
-  background-color: #303f9f;
+  background-color: #22aa57;
+}
+
+/* Add hover effect for saved pages in the modal */
+.popup ul li.saved-page {
+  padding: 10px;
+  transition: background-color 0.2s;
+  border-radius: 3px;
+}
+
+.popup ul li.saved-page:hover {
+  background-color: #f1f1f1;
 }
 
 /* Resizable Image Styles */

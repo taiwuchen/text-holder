@@ -7,6 +7,8 @@ function App() {
   const [isContentEmpty, setIsContentEmpty] = useState(true);
   const [showSavedPages, setShowSavedPages] = useState(false);
   const [savedPages, setSavedPages] = useState([]);
+  const [selectedPageIds, setSelectedPageIds] = useState([]);
+  const [currentPageId, setCurrentPageId] = useState(null);
 
   useEffect(() => {
     // Load saved content for the active page
@@ -113,11 +115,10 @@ function App() {
 
   const handleInput = () => {
     const contentText = contentRef.current.textContent.trim();
-    if (contentText === '' && contentRef.current.querySelectorAll('img').length === 0) {
-      setIsContentEmpty(true);
-    } else {
-      setIsContentEmpty(false);
-    }
+    setIsContentEmpty(
+      contentText === '' &&
+      contentRef.current.querySelectorAll('img').length === 0
+    );
     saveContent();
   };
 
@@ -128,27 +129,43 @@ function App() {
     }
   };
 
-  // Saves the active page content under a persistent "content" key
+  // Saves the active page content under a persistent "content" key.
   const saveContent = () => {
     const content = contentRef.current.innerHTML;
     localStorage.setItem('content', content);
   };
 
-  // Save the current page to "pages" and clear the active page,
-  // without removing the previously saved pages.
-  const handleSaveAndNewPage = () => {
+  // Save function: saves the current page.
+  // - If the page hasn't been saved (currentPageId null), it creates a new page.
+  // - If it has been saved before, it updates that entry.
+  const handleSavePage = () => {
     const currentContent = contentRef.current.innerHTML;
-    const timestamp = new Date().getTime();
-    const pages = localStorage.getItem('pages')
+    let pages = localStorage.getItem('pages')
       ? JSON.parse(localStorage.getItem('pages'))
       : [];
-    pages.push({ id: timestamp, content: currentContent });
+    
+    if (currentPageId) {
+      pages = pages.map(page =>
+        page.id === currentPageId ? { ...page, content: currentContent } : page
+      );
+    } else {
+      const timestamp = new Date().getTime();
+      const defaultTitle = 'Page ' + new Date(timestamp).toLocaleString();
+      pages.unshift({ id: timestamp, content: currentContent, title: defaultTitle });
+      setCurrentPageId(timestamp);
+    }
+    
     localStorage.setItem('pages', JSON.stringify(pages));
+    alert('Page saved!');
+  };
 
-    // Clear the active page (the saved page remains in "pages")
+  // New function: creates a new page.
+  // This clears the current content and resets tracking for currentPageId.
+  const handleNewPage = () => {
     contentRef.current.innerHTML = '';
     localStorage.removeItem('content');
     setIsContentEmpty(true);
+    setCurrentPageId(null);
   };
 
   const handleShowSavedPages = () => {
@@ -164,12 +181,40 @@ function App() {
     localStorage.setItem('content', page.content);
     setIsContentEmpty(
       contentRef.current.textContent.trim() === '' &&
-        contentRef.current.querySelectorAll('img').length === 0
+      contentRef.current.querySelectorAll('img').length === 0
     );
+    setCurrentPageId(page.id);
     setShowSavedPages(false);
   };
 
+  const handleRenamePage = (pageId) => {
+    const newName = window.prompt('Enter a new name for this page:');
+    if (newName && newName.trim() !== '') {
+      const pages = savedPages.map(page =>
+        page.id === pageId ? { ...page, title: newName } : page
+      );
+      localStorage.setItem('pages', JSON.stringify(pages));
+      setSavedPages(pages);
+    }
+  };
+
+  const handleToggleSelectPage = (pageId, checked) => {
+    if (checked) {
+      setSelectedPageIds([...selectedPageIds, pageId]);
+    } else {
+      setSelectedPageIds(selectedPageIds.filter(id => id !== pageId));
+    }
+  };
+
+  const handleDeleteSelectedPages = () => {
+    const pages = savedPages.filter(page => !selectedPageIds.includes(page.id));
+    localStorage.setItem('pages', JSON.stringify(pages));
+    setSavedPages(pages);
+    setSelectedPageIds([]);
+  };
+
   const closeSavedPages = () => {
+    setSelectedPageIds([]);
     setShowSavedPages(false);
   };
 
@@ -193,7 +238,8 @@ function App() {
       
       {/* Toolbar */}
       <div className="toolbar" style={{ marginBottom: '10px', textAlign: 'right' }}>
-        <button onClick={handleSaveAndNewPage}>Save &amp; New Page</button>
+        <button onClick={handleSavePage}>Save</button>
+        <button onClick={handleNewPage}>New</button>
         <button onClick={handleShowSavedPages}>Saved Pages</button>
       </div>
       
@@ -210,25 +256,74 @@ function App() {
         {isContentEmpty && <div className="placeholder">Type or insert image here</div>}
       </div>
       
-      {/* Modal for Saved Pages */}
+      {/* Modal for Saved Pages in src/App.js */}
       {showSavedPages && (
         <div className="popup-overlay">
-          <div className="popup">
+          <div className="popup" style={{ position: 'relative' }}>
+            <button
+              onClick={closeSavedPages}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                border: 'none',
+                background: 'transparent',
+                fontSize: '20px',
+                cursor: 'pointer',
+                color: '#333',
+              }}
+              aria-label="Close"
+            >
+              ✖
+            </button>
             <h2>Saved Pages</h2>
             {savedPages.length === 0 ? (
               <p>No saved pages available.</p>
             ) : (
-              <ul>
-                {savedPages.map((page) => (
-                  <li key={page.id} style={{ marginBottom: '10px' }}>
-                    <button onClick={() => handleLoadPage(page)}>
-                      Load Page {new Date(page.id).toLocaleString()}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <>
+                <ul>
+                  {savedPages.map(page => (
+                    <li
+                        key={page.id}
+                        className="saved-page"
+                        style={{
+                        listStyle: 'none',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+>
+                      <input
+                        type="checkbox"
+                        style={{ marginRight: '10px' }}
+                        onChange={(e) => handleToggleSelectPage(page.id, e.target.checked)}
+                        checked={selectedPageIds.includes(page.id)}
+                      />
+                      <strong
+                        style={{ cursor: 'pointer', marginRight: '10px' }}
+                        onClick={() => handleLoadPage(page)}
+                      >
+                        {page.title || 'Untitled'}
+                      </strong>
+                      <button
+                        onClick={() => handleRenamePage(page.id)}
+                        style={{
+                          marginLeft: '10px',
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer'
+                        }}
+                        aria-label="Rename"
+                      >
+                        <img src="/rename-icon.png" alt="Rename" style={{ width: '16px', height: '16px' }} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {selectedPageIds.length > 0 && (
+                  <button onClick={handleDeleteSelectedPages}>Delete Selected</button>
+                )}
+              </>
             )}
-            <button onClick={closeSavedPages}>Close</button>
           </div>
         </div>
       )}
