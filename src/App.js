@@ -151,7 +151,7 @@ function App() {
     } else {
       const timestamp = new Date().getTime();
       const defaultTitle = 'Page ' + new Date(timestamp).toLocaleString();
-      pages.push({ id: timestamp, content: currentContent, title: defaultTitle });
+      pages.unshift({ id: timestamp, content: currentContent, title: defaultTitle });
       setCurrentPageId(timestamp);
     }
     
