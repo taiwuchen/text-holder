@@ -114,19 +114,22 @@ function App() {
   };
 
   const handleInput = () => {
-    const contentText = contentRef.current.textContent.trim();
-    setIsContentEmpty(
-      contentText === '' &&
-      contentRef.current.querySelectorAll('img').length === 0
-    );
+    // Check if there's any content, including line breaks
+    const isEmpty = contentRef.current.innerHTML.trim() === '' ||
+                   (contentRef.current.innerHTML.trim().replace(/<br\s*\/?>/gi, '').trim() === '' &&
+                    contentRef.current.querySelectorAll('img').length === 0);
+    
+    setIsContentEmpty(isEmpty);
     saveContent();
   };
 
   const handleBlur = () => {
-    const contentText = contentRef.current.textContent.trim();
-    if (contentText === '' && contentRef.current.querySelectorAll('img').length === 0) {
-      setIsContentEmpty(true);
-    }
+    // Check if there's any content, including line breaks
+    const isEmpty = contentRef.current.innerHTML.trim() === '' ||
+                   (contentRef.current.innerHTML.trim().replace(/<br\s*\/?>/gi, '').trim() === '' &&
+                    contentRef.current.querySelectorAll('img').length === 0);
+    
+    setIsContentEmpty(isEmpty);
   };
 
   // Saves the active page content under a persistent "content" key.
