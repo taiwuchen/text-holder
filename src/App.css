@@ -139,15 +139,6 @@ img {
   margin-top: 0;
 }
 
-.popup button {
-  margin-top: 5px;
-}
-
-/* Regular buttons hover state */
-.popup button:hover {
-  background-color: #22aa57;
-}
-
 /* Special styling for the close button */
 .popup button[aria-label="Close"] {
   position: absolute;
@@ -236,52 +227,33 @@ img.resizable {
 
 /* New Button Styles */
 .button {
-  position: relative;
-  text-decoration: none;
-  color: #fff;
-  background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
-  padding: 14px 25px;
-  border-radius: 10px;
-  font-size: 1.25em;
+  background: #ffffff;
+  font-family: inherit;
+  padding: 0.2em 1.0em;
+  font-weight: 700;
+  font-size: 16px;
+  border: 3px solid black;
+  border-radius: 0.4em;
+  box-shadow: 0.1em 0.1em;
   cursor: pointer;
-  border: none; /* Ensure no default border */
-  margin: 0 5px; /* Keep margin from original style */
+  margin: 0 5px; /* Keep margin */
+  color: black; /* Added for better contrast */
+  text-decoration: none; /* Ensure no underline */
 }
 
-.button span {
-  position: relative;
-  z-index: 1;
+.button:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
 }
 
-.button::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  background: #272727;
-  border-radius: 9px;
-  transition: 0.5s;
+.button:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
 }
 
-.button:hover::before {
-  opacity: 0.7;
-}
 
-.button::after {
-  content: "";
-  position: absolute;
-  inset: 0px;
-  background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
-  border-radius: 9px;
-  transition: 0.5s;
-  opacity: 0;
-  filter: blur(20px);
-}
-
-.button:hover:after {
-  opacity: 1;
-}
-
-/* Specialized Button Styles */
+/* Specialized Button Styles - Kept Separate */
+/* This targets the 'X' button in modals/popups if it uses this class */
 .button-close {
   position: absolute;
   top: 10px;
@@ -307,13 +279,16 @@ img.resizable {
     width: 90%;
     padding: 20px;
   }
-  
+
+  /* Adjust new button style for smaller screens */
   .button {
-    font-size: 15px;
+    font-size: 16px; /* Slightly smaller font */
+    padding: 0.5em 1.1em; /* Adjust padding */
   }
-  
-  .button span {
-    padding: 0.6em 1em;
+  /* Ensure popup close button isn't affected by general button responsive style */
+  .popup button[aria-label="Close"] {
+      font-size: 20px; /* Keep original size */
+      padding: 0; /* Keep original padding */
   }
 }
 
