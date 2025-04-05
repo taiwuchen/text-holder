@@ -247,6 +247,11 @@ img.resizable {
   position: relative;
   overflow: hidden;
   margin: 0 5px;
+  transition: box-shadow 0.3s ease;
+}
+
+.button:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .button span {
@@ -268,6 +273,7 @@ img.resizable {
 
 .button:hover span {
   background-color: rgb(26, 25, 25);
+  text-shadow: 0 0 8px rgb(223, 222, 222);
 }
 
 .button-overlay {
