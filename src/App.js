@@ -233,6 +233,7 @@ function App() {
             <button
               onClick={closePopup}
               aria-label="Close"
+              className="button-close"
             >
               ✖
             </button>
@@ -240,16 +241,28 @@ function App() {
             <p>
               Note: Your content is saved locally in your browser. Clearing your browser data will erase your content.
             </p>
-            <button onClick={closePopup}>Get Started</button>
+            <button className="button" onClick={closePopup}>
+              <div className="button-overlay"></div>
+              <span>Get Started</span>
+            </button>
           </div>
         </div>
       )}
       
       {/* Toolbar */}
       <div className="toolbar" style={{ marginBottom: '10px', textAlign: 'right' }}>
-        <button onClick={handleSavePage}>Save</button>
-        <button onClick={handleNewPage}>New</button>
-        <button onClick={handleShowSavedPages}>Saved Pages</button>
+        <button className="button" onClick={handleSavePage}>
+          <div className="button-overlay"></div>
+          <span>Save</span>
+        </button>
+        <button className="button" onClick={handleNewPage}>
+          <div className="button-overlay"></div>
+          <span>New</span>
+        </button>
+        <button className="button" onClick={handleShowSavedPages}>
+          <div className="button-overlay"></div>
+          <span>Saved Pages</span>
+        </button>
       </div>
       
       {/* Editor */}
@@ -272,6 +285,7 @@ function App() {
             <button
               onClick={closeSavedPages}
               aria-label="Close"
+              className="button-close"
             >
               ✖
             </button>
@@ -326,7 +340,6 @@ function App() {
                             border: 'none',
                             cursor: 'pointer'
                           }}
-                          aria-label="Rename"
                         >
                           <img src="/rename-icon.png" alt="Rename" style={{ width: '16px', height: '16px' }} />
                         </button>
@@ -336,7 +349,10 @@ function App() {
                 </div>
                 {selectedPageIds.length > 0 && (
                   <div style={{ padding: '10px 0' }}>
-                    <button onClick={handleDeleteSelectedPages}>Delete Selected</button>
+                    <button className="button" onClick={handleDeleteSelectedPages}>
+                      <div className="button-overlay"></div>
+                      <span>Delete Selected</span>
+                    </button>
                   </div>
                 )}
               </>
