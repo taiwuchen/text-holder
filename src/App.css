@@ -43,7 +43,7 @@ body {
 
 /* Toolbar style with a distinct background color */
 .toolbar {
-  background-color: #e0e0e0;
+  background-color: #dbdbdb;
   padding: 10px 20px;
   display: flex;
   justify-content: flex-end;
@@ -247,10 +247,11 @@ img.resizable {
   position: relative;
   overflow: hidden;
   margin: 0 5px;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease, filter 0.2s ease; /* Added transform and filter transitions */
 }
 
 .button:hover {
+  transform: scale(1.03);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
