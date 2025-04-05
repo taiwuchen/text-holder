@@ -262,7 +262,7 @@ function App() {
       {/* Modal for Saved Pages in src/App.js */}
       {showSavedPages && (
         <div className="popup-overlay">
-          <div className="popup" style={{ position: 'relative' }}>
+          <div className="popup" style={{ position: 'relative', maxWidth: '500px', width: '90%' }}>
             <button
               onClick={closeSavedPages}
               style={{
@@ -284,46 +284,64 @@ function App() {
               <p>No saved pages available.</p>
             ) : (
               <>
-                <ul>
-                  {savedPages.map(page => (
-                    <li
+                <div style={{ 
+                  maxHeight: '60vh', 
+                  overflowY: 'auto',
+                  marginBottom: '15px',
+                  padding: '5px'
+                }}>
+                  <ul style={{ padding: 0, margin: 0 }}>
+                    {savedPages.map(page => (
+                      <li
                         key={page.id}
                         className="saved-page"
                         style={{
-                        listStyle: 'none',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        style={{ marginRight: '10px' }}
-                        onChange={(e) => handleToggleSelectPage(page.id, e.target.checked)}
-                        checked={selectedPageIds.includes(page.id)}
-                      />
-                      <strong
-                        style={{ cursor: 'pointer', marginRight: '10px' }}
-                        onClick={() => handleLoadPage(page)}
-                      >
-                        {page.title || 'Untitled'}
-                      </strong>
-                      <button
-                        onClick={() => handleRenamePage(page.id)}
-                        style={{
-                          marginLeft: '10px',
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer'
+                          listStyle: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '8px 5px',
+                          borderBottom: '1px solid #eee'
                         }}
-                        aria-label="Rename"
                       >
-                        <img src="/rename-icon.png" alt="Rename" style={{ width: '16px', height: '16px' }} />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                        <input
+                          type="checkbox"
+                          style={{ marginRight: '10px' }}
+                          onChange={(e) => handleToggleSelectPage(page.id, e.target.checked)}
+                          checked={selectedPageIds.includes(page.id)}
+                        />
+                        <strong
+                          style={{ 
+                            cursor: 'pointer', 
+                            marginRight: '10px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            flex: 1
+                          }}
+                          onClick={() => handleLoadPage(page)}
+                        >
+                          {page.title || 'Untitled'}
+                        </strong>
+                        <button
+                          onClick={() => handleRenamePage(page.id)}
+                          style={{
+                            marginLeft: '10px',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer'
+                          }}
+                          aria-label="Rename"
+                        >
+                          <img src="/rename-icon.png" alt="Rename" style={{ width: '16px', height: '16px' }} />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 {selectedPageIds.length > 0 && (
-                  <button onClick={handleDeleteSelectedPages}>Delete Selected</button>
+                  <div style={{ padding: '10px 0' }}>
+                    <button onClick={handleDeleteSelectedPages}>Delete Selected</button>
+                  </div>
                 )}
               </>
             )}
