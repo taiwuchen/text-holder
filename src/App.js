@@ -242,7 +242,6 @@ function App() {
               Note: Your content is saved locally in your browser. Clearing your browser data will erase your content.
             </p>
             <button className="button" onClick={closePopup}>
-              <div className="button-overlay"></div>
               <span>Get Started</span>
             </button>
           </div>
@@ -252,15 +251,12 @@ function App() {
       {/* Toolbar */}
       <div className="toolbar" style={{ marginBottom: '10px', textAlign: 'right' }}>
         <button className="button" onClick={handleSavePage}>
-          <div className="button-overlay"></div>
           <span>Save</span>
         </button>
         <button className="button" onClick={handleNewPage}>
-          <div className="button-overlay"></div>
           <span>New</span>
         </button>
         <button className="button" onClick={handleShowSavedPages}>
-          <div className="button-overlay"></div>
           <span>Saved Pages</span>
         </button>
       </div>
@@ -350,7 +346,6 @@ function App() {
                 {selectedPageIds.length > 0 && (
                   <div style={{ padding: '10px 0' }}>
                     <button className="button" onClick={handleDeleteSelectedPages}>
-                      <div className="button-overlay"></div>
                       <span>Delete Selected</span>
                     </button>
                   </div>
