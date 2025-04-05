@@ -148,8 +148,30 @@ img {
   cursor: pointer;
 }
 
+/* Regular buttons hover state */
 .popup button:hover {
   background-color: #22aa57;
+}
+
+/* Special styling for the close button */
+.popup button[aria-label="Close"] {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+/* Close button hover state */
+.popup button[aria-label="Close"]:hover {
+  color: #e53935; /* Red color on hover */
+  background-color: transparent;
 }
 
 /* Add hover effect for saved pages in the modal */

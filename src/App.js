@@ -230,6 +230,12 @@ function App() {
       {showPopup && (
         <div className="popup-overlay">
           <div className="popup">
+            <button
+              onClick={closePopup}
+              aria-label="Close"
+            >
+              ✖
+            </button>
             <h2>Welcome to Text Holder!</h2>
             <p>
               Note: Your content is saved locally in your browser. Clearing your browser data will erase your content.
@@ -265,16 +271,6 @@ function App() {
           <div className="popup" style={{ position: 'relative', maxWidth: '500px', width: '90%' }}>
             <button
               onClick={closeSavedPages}
-              style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                border: 'none',
-                background: 'transparent',
-                fontSize: '20px',
-                cursor: 'pointer',
-                color: '#333',
-              }}
               aria-label="Close"
             >
               ✖
