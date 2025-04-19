@@ -210,10 +210,12 @@ function App() {
   };
 
   const handleDeleteSelectedPages = () => {
-    const pages = savedPages.filter(page => !selectedPageIds.includes(page.id));
-    localStorage.setItem('pages', JSON.stringify(pages));
-    setSavedPages(pages);
-    setSelectedPageIds([]);
+    if (window.confirm(`Are you sure you want to delete ${selectedPageIds.length} selected page(s)?`)) {
+      const pages = savedPages.filter(page => !selectedPageIds.includes(page.id));
+      localStorage.setItem('pages', JSON.stringify(pages));
+      setSavedPages(pages);
+      setSelectedPageIds([]);
+    }
   };
 
   const closeSavedPages = () => {
