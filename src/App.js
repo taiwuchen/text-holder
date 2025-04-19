@@ -31,6 +31,15 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    const currentPage = savedPages.find(page => page.id === currentPageId);
+    if (currentPage) {
+      document.title = currentPage.title || 'Untitled Page - Text Holder';
+    } else {
+      document.title = 'Text Holder';
+    }
+  }, [currentPageId, savedPages]);
+
   const handlePaste = (event) => {
     const items = event.clipboardData.items;
     let isImagePasted = false;
@@ -251,16 +260,21 @@ function App() {
       )}
       
       {/* Toolbar */}
-      <div className="toolbar" style={{ marginBottom: '10px', textAlign: 'right' }}>
-        <button className="button" onClick={handleSavePage}>
-          <span>Save</span>
-        </button>
-        <button className="button" onClick={handleNewPage}>
-          <span>New</span>
-        </button>
-        <button className="button" onClick={handleShowSavedPages}>
-          <span>Saved Pages</span>
-        </button>
+      <div className="toolbar" style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ fontWeight: 'bold', fontSize: '1.2em' }}>
+          {currentPageId ? (savedPages.find(page => page.id === currentPageId)?.title || 'Untitled Page') : 'New Page'}
+        </div>
+        <div>
+          <button className="button" onClick={handleSavePage}>
+            <span>Save</span>
+          </button>
+          <button className="button" onClick={handleNewPage}>
+            <span>New</span>
+          </button>
+          <button className="button" onClick={handleShowSavedPages}>
+            <span>Saved Pages</span>
+          </button>
+        </div>
       </div>
       
       {/* Editor */}
