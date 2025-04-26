@@ -1,0 +1,302 @@
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.indie-flower-regular {
+  font-family: "Indie Flower", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Add the new Raleway font style */
+.raleway-font {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.app {
+  /* position: fixed; */
+  width: 95%;
+  max-width: 1500px;
+  height: 100vh; /* Use full viewport height */
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Toolbar style with a distinct background color */
+.toolbar {
+  background-color: #dbdbdb;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Editor wrapper takes remaining space */
+.editor-wrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content Editable Area */
+.content-editable {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  outline: none;
+  overflow-y: auto;
+  line-height: 1.6;
+  word-wrap: break-word; /* Ensure long words break to prevent overflow */
+  overflow-wrap: break-word; /* For wider browser support */
+  font-family: "Raleway", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 28px !important;
+  max-height: calc(100vh - 60px); /* Adjust for toolbar height */
+}
+
+.content-editable:focus {
+  cursor: text;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #000000;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+/* Placeholder Text */
+.placeholder {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #888888;
+  pointer-events: none;
+  font-size: 28px;
+  line-height: 1.6;
+  user-select: none;
+  font-family: "Raleway", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  max-width: calc(100% - 40px); /* Account for padding */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pop-Up Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 5px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.popup h2 {
+  margin-top: 0;
+}
+
+/* Special styling for the close button */
+.popup button[aria-label="Close"] {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+/* Close button hover state */
+.popup button[aria-label="Close"]:hover {
+  color: #e53935; /* Red color on hover */
+  background-color: transparent;
+}
+
+/* Add hover effect for saved pages in the modal */
+.popup ul li.saved-page {
+  padding: 10px;
+  transition: background-color 0.2s;
+  border-radius: 3px;
+}
+
+.popup ul li.saved-page:hover {
+  background-color: #f1f1f1;
+}
+
+/* Resizable Image Styles */
+.img-container {
+  position: relative;
+  display: inline-block;
+}
+
+img.resizable {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #3f51b5;
+  border-radius: 3px;
+  padding: 5px;
+  display: block;
+}
+
+/* Resize Handle (Button) */
+.resize-handle {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: #3f51b5;
+  border-radius: 50%;
+  cursor: nwse-resize;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.resize-handle:after {
+  content: "↘";
+  font-size: 14px;
+  color: white;
+}
+
+/* enforce style */
+.content-editable {
+  font-family: "Raleway", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 28px !important;
+}
+
+.content-editable * {
+  font-size: inherit !important;
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  font-style: inherit !important;
+  font-optical-sizing: inherit !important;
+}
+
+/* New Button Styles */
+.button {
+  background: #ffffff;
+  font-family: inherit;
+  padding: 0.2em 1.0em;
+  font-weight: 700;
+  font-size: 16px;
+  border: 3px solid black;
+  border-radius: 0.4em;
+  box-shadow: 0.1em 0.1em;
+  cursor: pointer;
+  margin: 0 5px; /* Keep margin */
+  color: black; /* Added for better contrast */
+  text-decoration: none; /* Ensure no underline */
+}
+
+.button:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+.button:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+
+
+/* Specialized Button Styles - Kept Separate */
+/* This targets the 'X' button in modals/popups if it uses this class */
+.button-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.button-close:hover {
+  color: #e53935; /* Red color on hover */
+  background-color: transparent;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .popup {
+    width: 90%;
+    padding: 20px;
+  }
+
+  /* Adjust new button style for smaller screens */
+  .button {
+    font-size: 16px; /* Slightly smaller font */
+    padding: 0.5em 1.1em; /* Adjust padding */
+  }
+  /* Ensure popup close button isn't affected by general button responsive style */
+  .popup button[aria-label="Close"] {
+      font-size: 20px; /* Keep original size */
+      padding: 0; /* Keep original padding */
+  }
+}
+
+/* Touch-friendly adjustments for mobile */
+@media (max-width: 768px) {
+  .resize-handle {
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+  }
+}
